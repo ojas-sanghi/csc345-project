@@ -20,6 +20,7 @@ public class RadixTree {
         }
     }
 
+
     RadixNode root;
 
     public RadixTree() {
