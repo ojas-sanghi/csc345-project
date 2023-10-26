@@ -37,4 +37,21 @@ public class StandardTrie {
 
         return search(word, newStandardNode, idx + 1);
     }
+    public void insert(String key) {
+        int pointer = 0; // This points to the current char being added
+        StandardNode current = root; // This points to the node we are currently exploring
+        while (pointer < key.length()) {
+            char c = Character.toLowerCase(key.charAt(pointer)); // Makes it lowercase
+            if (Character.isLetter(c)) { // This will make sure it is a letter
+                int code = Character.getNumericValue(c) - 97; // Gets ascii and shifts 0-25 scale
+                if (current.children[code] == null) { // Create one if not already there
+                    current.children[code] = new StandardNode();
+                }
+                current = current.children[code];
+            }
+            pointer++;
+        }
+        current.isEnd = true;
+    }
+
 }
