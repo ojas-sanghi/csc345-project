@@ -43,7 +43,7 @@ public class StandardTrie {
         while (pointer < key.length()) {
             char c = Character.toLowerCase(key.charAt(pointer)); // Makes it lowercase
             if (Character.isLetter(c)) { // This will make sure it is a letter
-                int code = Character.getNumericValue(c) - 97; // Gets ascii and shifts 0-25 scale
+                int code = c - 97; // Gets ascii and shifts 0-25 scale
                 if (current.children[code] == null) { // Create one if not already there
                     current.children[code] = new StandardNode();
                 }
@@ -54,4 +54,26 @@ public class StandardTrie {
         current.isEnd = true;
     }
 
+    public void printStrings()
+    {
+        this.printStrings(this.root, "");
+    }
+
+    private void printStrings(StandardNode current, String s)
+    {
+        if(current.isEnd) System.out.println(s);
+        else
+            for(int i = 0; i < 26; i++)
+                if(current.children[i] != null)
+                    this.printStrings(current.children[i], s + (char)(97 + i));
+    }
+
+    public static void main(String[] args)
+    {
+        StandardTrie t = new StandardTrie();
+        t.insert("hello");
+        t.insert("hey");
+        t.insert("heavy");
+        t.printStrings();
+    }
 }
