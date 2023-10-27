@@ -81,4 +81,25 @@ public class RadixTree {
 
     }
 
+    public boolean search(String input)
+    {
+        return this.search(input, this.root);
+    }
+
+    private boolean search(String search, RadixNode current)
+    {
+        if(search.isEmpty()) return true;
+        if(current.childrenSize == 0 && !search.isEmpty()) return false;
+        else
+        {
+            boolean result = false;
+
+            for(RadixNode n : current.children)
+                if(n != null)
+                    if(search.startsWith(n.label))
+                        result = result || search(search.substring(n.label.length()), n);
+
+            return result;
+        }
+    }
 }

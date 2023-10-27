@@ -74,6 +74,7 @@ public class StandardTrie {
     {
         StandardTrie t = new StandardTrie();
         t.insert("play");
+        t.insert("playful");
         t.insert("playground");
         t.printStrings();
     }
