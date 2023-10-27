@@ -61,19 +61,20 @@ public class StandardTrie {
 
     private void printStrings(StandardNode current, String s)
     {
+        //If current node is the end of a word, print out the string
         if(current.isEnd) System.out.println(s);
-        else
-            for(int i = 0; i < 26; i++)
-                if(current.children[i] != null)
-                    this.printStrings(current.children[i], s + (char)(97 + i));
+
+        //Then keep checking children for more potential words
+        for(int i = 0; i < 26; i++)
+            if(current.children[i] != null)
+                this.printStrings(current.children[i], s + (char)(97 + i));
     }
 
     public static void main(String[] args)
     {
         StandardTrie t = new StandardTrie();
-        t.insert("hello");
-        t.insert("hey");
-        t.insert("heavy");
+        t.insert("play");
+        t.insert("playground");
         t.printStrings();
     }
 }
