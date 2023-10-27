@@ -43,7 +43,7 @@ public class StandardTrie {
         while (pointer < key.length()) {
             char c = Character.toLowerCase(key.charAt(pointer)); // Makes it lowercase
             if (Character.isLetter(c)) { // This will make sure it is a letter
-                int code = Character.getNumericValue(c) - 97; // Gets ascii and shifts 0-25 scale
+                int code = c - 97; // Gets ascii and shifts 0-25 scale
                 if (current.children[code] == null) { // Create one if not already there
                     current.children[code] = new StandardNode();
                 }
@@ -54,4 +54,28 @@ public class StandardTrie {
         current.isEnd = true;
     }
 
+    public void printStrings()
+    {
+        this.printStrings(this.root, "");
+    }
+
+    private void printStrings(StandardNode current, String s)
+    {
+        //If current node is the end of a word, print out the string
+        if(current.isEnd) System.out.println(s);
+
+        //Then keep checking children for more potential words
+        for(int i = 0; i < 26; i++)
+            if(current.children[i] != null)
+                this.printStrings(current.children[i], s + (char)(97 + i));
+    }
+
+    public static void main(String[] args)
+    {
+        StandardTrie t = new StandardTrie();
+        t.insert("play");
+        t.insert("playful");
+        t.insert("playground");
+        t.printStrings();
+    }
 }
