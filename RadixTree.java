@@ -88,12 +88,18 @@ public class RadixTree {
 
     private boolean search(String search, RadixNode current)
     {
+        //If input string is empty, then it's been found
         if(search.isEmpty()) return true;
-        if(current.childrenSize == 0 && !search.isEmpty()) return false;
+        //If current node is the end of a word (and input string isn't empty), then not found
+        else if(current.childrenSize == 0) return false;
+        //Recursive case
         else
         {
             boolean result = false;
 
+            //Loop through all nonnull children and check if they match the start of the input string, and recurse if so
+            //Input string is trimmed (removing the prefix) before recursing
+            //If any of them return true, then the word has been found
             for(RadixNode n : current.children)
                 if(n != null)
                     if(search.startsWith(n.label))
