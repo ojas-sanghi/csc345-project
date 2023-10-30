@@ -53,7 +53,31 @@ public class StandardTrie {
         }
         current.isEnd = true;
     }
+    public void delete(String key)
+    {
+        StandardNode curNode = root;
+        //if empty string is given
+        for(int i = 0;i<key.length;i++)
+        {
+            if(curNode== null)
+            {
+                return;
+            }
+            char c = Character.toLowerCase(key.charAt(pointer));
+            if(Character.isLetter(c))
+            {
+                int code = c-97;
+                if(curNode.children[code] == null)
+                {
+                    return
+                }
+                curNode = curNode.children[code];
+            }
+        }
+        curNode.isEnd = false;
+    }
 
+    
     public void printStrings()
     {
         this.printStrings(this.root, "");
