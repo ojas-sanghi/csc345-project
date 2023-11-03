@@ -1,4 +1,4 @@
-public class StandardTrie {
+public class StandardTrie implements Trie {
 
     public class StandardNode {
         StandardNode[] children;
