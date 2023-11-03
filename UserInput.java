@@ -31,7 +31,7 @@ public class UserInput
                 case 1 ->
                 {
                     System.out.println("Type a word to insert: ");
-                    String word = scanner.nextLine();
+                    String word = scanner.next();
 
                     trie.insert(word);
                     System.out.println("\"" + word + "\" has been inserted.");
@@ -39,7 +39,7 @@ public class UserInput
                 case 2 ->
                 {
                     System.out.println("Type a word to search for: ");
-                    String word = scanner.nextLine();
+                    String word = scanner.next();
 
                     boolean search = trie.search(word);
                     System.out.println("\"" + word + "\" was " + (search ? "not" : "") + " found in the trie.");
@@ -47,7 +47,7 @@ public class UserInput
                 case 3 ->
                 {
                     System.out.println("Type a word to delete: ");
-                    String word = scanner.nextLine();
+                    String word = scanner.next();
 
                     trie.delete(word);
                     System.out.println("\"" + word + "\" has been deleted.");
@@ -60,7 +60,7 @@ public class UserInput
                 case 5 ->
                 {
                     System.out.println("Type a prefix to search for: ");
-                    String prefix = scanner.nextLine();
+                    String prefix = scanner.next();
 
                     System.out.println("The trie contains these words starting with \"" + prefix + "-\": ");
                     trie.printWordsPrefix(prefix);
@@ -71,16 +71,6 @@ public class UserInput
                     exit = true;
                 }
             }
-        }
-    }
-
-    private static void radixTreeInputs()
-    {
-        System.out.println("Radix Tree selected.");
-
-        while(true)
-        {
-            System.out.println("Do you want to 1) insert a word, 2) search for a word, 3) delete a word, or 4) print all words?");
         }
     }
 }
