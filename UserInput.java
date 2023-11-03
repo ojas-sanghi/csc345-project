@@ -17,13 +17,12 @@ public class UserInput
     {
         System.out.println("Standard Trie selected.");
 
-        StandardTrie sTrie = new StandardTrie();
-        RadixTree rTree = new RadixTree();
+        Trie trie = radix ? new RadixTree() : new StandardTrie();
 
         boolean exit = false;
         while(!exit)
         {
-            System.out.println("Do you want to 1) insert a word, 2) search for a word, 3) delete a word, 4) print all words, or 5) exit?");
+            System.out.println("Do you want to 1) insert a word, 2) search for a word, 3) delete a word, 4) print all words, 5) print all words starting with a prefix or 6) exit?");
 
             int choice = scanner.nextInt();
 
@@ -31,23 +30,44 @@ public class UserInput
             {
                 case 1 ->
                 {
+                    System.out.println("Type a word to insert: ");
+                    String word = scanner.nextLine();
 
+                    trie.insert(word);
+                    System.out.println("\"" + word + "\" has been inserted.");
                 }
                 case 2 ->
                 {
+                    System.out.println("Type a word to search for: ");
+                    String word = scanner.nextLine();
 
+                    boolean search = trie.search(word);
+                    System.out.println("\"" + word + "\" was " + (search ? "not" : "") + " found in the trie.");
                 }
                 case 3 ->
                 {
+                    System.out.println("Type a word to delete: ");
+                    String word = scanner.nextLine();
 
+                    trie.delete(word);
+                    System.out.println("\"" + word + "\" has been deleted.");
                 }
                 case 4 ->
                 {
+                    System.out.println("The trie contains these words: ");
+                    trie.printWords();
+                }
+                case 5 ->
+                {
+                    System.out.println("Type a prefix to search for: ");
+                    String prefix = scanner.nextLine();
 
+                    System.out.println("The trie contains these words starting with \"" + prefix + "-\": ");
+                    trie.printWordsPrefix(prefix);
                 }
                 default ->
                 {
-                    System.out.println(choice == 5 ? "Exiting..." : "Invalid input, exiting...");
+                    System.out.println(choice == 6 ? "Exiting..." : "Invalid input, exiting...");
                     exit = true;
                 }
             }
