@@ -57,19 +57,19 @@ public class StandardTrie {
     {
         StandardNode curNode = root;
         //if empty string is given
-        for(int i = 0;i<key.length;i++)
+        for(int i = 0;i<key.length();i++)
         {
             if(curNode== null)
             {
                 return;
             }
-            char c = Character.toLowerCase(key.charAt(pointer));
+            char c = Character.toLowerCase(key.charAt(i));
             if(Character.isLetter(c))
             {
                 int code = c-97;
                 if(curNode.children[code] == null)
                 {
-                    return
+                    return;
                 }
                 curNode = curNode.children[code];
             }

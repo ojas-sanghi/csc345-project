@@ -45,8 +45,8 @@ public class RadixTree {
 
         while(index<word.length())
         {
-            char c = Character.toLowerCase(word.CharAt(index));
-            String curString = word.subString(index);
+            char c = Character.toLowerCase(word.charAt(index));
+            String curString = word.substring(index);
             int childIndex = c-97;
             
             //string not in tree, adds the rest as a new node
@@ -54,9 +54,9 @@ public class RadixTree {
             {
                 curr.children[childIndex] = new RadixNode();
                 curr.children[childIndex].label = curString;
-                urr.children[childIndex].isEnd = true;
+                curr.children[childIndex].isEnd = true;
                 curr.childrenSize++;
-                break
+                break;
             }
             //finds index of first different letter between rest of word and child lable
             //-1 if one is contained in the other one
@@ -64,7 +64,7 @@ public class RadixTree {
             int length = Math.min(curString.length(),curr.children[childIndex].label.length());
             for(int i = 0;i<length;i++)
             {
-                if(curString.charAt(i) != curr.children[childIndex].label.charAr(i))
+                if(curString.charAt(i) != curr.children[childIndex].label.charAt(i))
                 {
                     split = i;
                     break;
@@ -83,9 +83,9 @@ public class RadixTree {
                 //if smaller than node's lable
                 else if(curString.length() < curr.children[childIndex].label.length())
                 {
-                    String subString = curr.children[childIndex].label.subString(curString.length());
+                    String subString = curr.children[childIndex].label.substring(curString.length());
                     curr.label = curString;
-                    char s = Character.toLowerCase(subString.CharAt(0));
+                    char s = Character.toLowerCase(subString.charAt(0));
                     int subindex = s -97;
                     curr.children[subindex] = new RadixNode();
                     curr.children[subindex].label = subString;
@@ -102,9 +102,9 @@ public class RadixTree {
             else
             {
                 // if child and string differ, split and create two new branches
-                String subString = curr.label.subString(split); //different part of prev lable
-                curr.label = curr.label.subString(0,split);    //similar part is new label
-                char sub1 = Character.toLowerCase(subString.CharAt(0));   //gets index for children array
+                String subString = curr.label.substring(split); //different part of prev lable
+                curr.label = curr.label.substring(0,split);    //similar part is new label
+                char sub1 = Character.toLowerCase(subString.charAt(0));   //gets index for children array
                 int subindex = sub1 -97;
                 
                 RadixNode restlabel = new RadixNode();    //creates a new node
@@ -115,16 +115,16 @@ public class RadixTree {
                 curr.children = new RadixNode[26];    //resets chilren of curr
                 curr.children[subindex] = restlabel;  //new node as a child of curr
                 
-                char rest1 = Character.toLowerCase(curString.CharAt(split));//adds rest of string 
+                char rest1 = Character.toLowerCase(curString.charAt(split));//adds rest of string
                 int wordindex = rest1 - 97;                              //get child index
                 curr.children[wordindex] = new RadixNode();
-                curr.children[wordindex].lable = curString.subString(split); //adds rest of string a new childnode
+                curr.children[wordindex].label = curString.substring(split); //adds rest of string a new childnode
                 curr.children[wordindex].isEnd = true;
                 curr.childrenSize = 2;              //curr has 2 children, two different parts of curr and string;
                 break;
             }
             //increments index and traveres tree before repeating
-            curr = curr.children[childindex];
+            curr = curr.children[childIndex];
             index += split;
             
         }
