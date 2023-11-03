@@ -78,12 +78,12 @@ public class StandardTrie implements Trie {
     }
 
     
-    public void printStrings()
+    public void printWords()
     {
-        this.printStrings(this.root, "");
+        this.printWords(this.root, "");
     }
 
-    private void printStrings(StandardNode current, String s)
+    private void printWords(StandardNode current, String s)
     {
         //If current node is the end of a word, print out the string
         if(current.isEnd) System.out.println(s);
@@ -91,7 +91,13 @@ public class StandardTrie implements Trie {
         //Then keep checking children for more potential words
         for(int i = 0; i < 26; i++)
             if(current.children[i] != null)
-                this.printStrings(current.children[i], s + (char)(97 + i));
+                this.printWords(current.children[i], s + (char)(97 + i));
+    }
+
+    @Override
+    public void printWordsPrefix(String prefix)
+    {
+
     }
 
     public static void main(String[] args)
@@ -100,6 +106,6 @@ public class StandardTrie implements Trie {
         t.insert("play");
         t.insert("playful");
         t.insert("playground");
-        t.printStrings();
+        t.printWords();
     }
 }

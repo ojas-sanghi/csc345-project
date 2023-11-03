@@ -1,6 +1,6 @@
 import java.util.HashMap;
 
-public class RadixTree {
+public class RadixTree implements Trie {
 
     private class RadixNode {
 
@@ -129,7 +129,13 @@ public class RadixTree {
             
         }
     }
-        
+
+    @Override
+    public void delete(String word)
+    {
+        this.delete(this.root, word);
+    }
+
     private RadixNode delete(RadixNode curr, String word){
         // Base Case
         if(word.isEmpty()){ // Base case when all characters are gone
@@ -199,5 +205,17 @@ public class RadixTree {
 
             return result;
         }
+    }
+
+    @Override
+    public void printWords()
+    {
+
+    }
+
+    @Override
+    public void printWordsPrefix(String prefix)
+    {
+
     }
 }
