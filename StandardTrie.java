@@ -99,13 +99,4 @@ public class StandardTrie implements Trie {
     {
 
     }
-
-    public static void main(String[] args)
-    {
-        StandardTrie t = new StandardTrie();
-        t.insert("play");
-        t.insert("playful");
-        t.insert("playground");
-        t.printWords();
-    }
 }
