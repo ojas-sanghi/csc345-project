@@ -265,5 +265,6 @@ public class RadixTree implements Trie {
             }
             printWordsPrefixHelper(cur.children[code], prefix, pointer);
         }
+
     }
 }
