@@ -1,0 +1,13 @@
+/MainProject.iml
+/.idea/
+/out/*
+/out/production/MainProject/.idea/.gitignore
+/out/production/MainProject/.idea/discord.xml
+/out/production/MainProject/MainProject.iml
+/out/production/MainProject/.idea/misc.xml
+/out/production/MainProject/.idea/modules.xml
+/out/production/MainProject/RadixTree$RadixNode.class
+/out/production/MainProject/RadixTree.class
+/out/production/MainProject/StandardTrie$StandardNode.class
+/out/production/MainProject/StandardTrie.class
+/out/production/MainProject/.idea/vcs.xml
