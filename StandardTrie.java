@@ -1,4 +1,4 @@
-public class StandardTrie {
+public class StandardTrie implements Trie {
 
     public class StandardNode {
         StandardNode[] children;
@@ -57,19 +57,19 @@ public class StandardTrie {
     {
         StandardNode curNode = root;
         //if empty string is given
-        for(int i = 0;i<key.length;i++)
+        for(int i = 0;i<key.length();i++)
         {
             if(curNode== null)
             {
                 return;
             }
-            char c = Character.toLowerCase(key.charAt(pointer));
+            char c = Character.toLowerCase(key.charAt(i));
             if(Character.isLetter(c))
             {
                 int code = c-97;
                 if(curNode.children[code] == null)
                 {
-                    return
+                    return;
                 }
                 curNode = curNode.children[code];
             }
@@ -78,12 +78,12 @@ public class StandardTrie {
     }
 
     
-    public void printStrings()
+    public void printWords()
     {
-        this.printStrings(this.root, "");
+        this.printWords(this.root, "");
     }
 
-    private void printStrings(StandardNode current, String s)
+    private void printWords(StandardNode current, String s)
     {
         //If current node is the end of a word, print out the string
         if(current.isEnd) System.out.println(s);
@@ -91,15 +91,12 @@ public class StandardTrie {
         //Then keep checking children for more potential words
         for(int i = 0; i < 26; i++)
             if(current.children[i] != null)
-                this.printStrings(current.children[i], s + (char)(97 + i));
+                this.printWords(current.children[i], s + (char)(97 + i));
     }
 
-    public static void main(String[] args)
+    @Override
+    public void printWordsPrefix(String prefix)
     {
-        StandardTrie t = new StandardTrie();
-        t.insert("play");
-        t.insert("playful");
-        t.insert("playground");
-        t.printStrings();
+
     }
 }
