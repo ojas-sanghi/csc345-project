@@ -93,10 +93,19 @@ public class StandardTrie implements Trie {
             if(current.children[i] != null)
                 this.printWords(current.children[i], s + (char)(97 + i));
     }
-
     @Override
-    public void printWordsPrefix(String prefix)
-    {
-
+    public void printWordsPrefix(String prefix){
+        StandardNode current = root;
+        for(int pointer = 0; pointer < prefix.length(); pointer ++){ // Go through all letters in the prefix
+            char c = Character.toLowerCase(prefix.charAt(pointer));
+            if(Character.isLetter(c)){
+                int code = c - 97;
+                if(current.children[code] == null){ // If null then we know we have no words there
+                    return;
+                }
+                current = current.children[code];
+            }
+        }
+        printWords(current, prefix); // Made it through the prefix, now just call printWords but starting from this node instead of root
     }
 }

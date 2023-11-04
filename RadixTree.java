@@ -208,14 +208,63 @@ public class RadixTree implements Trie {
     }
 
     @Override
-    public void printWords()
-    {
+    public void printWords() {
+        printWordsHelper(root, "");
+    }
 
+    private void printWordsHelper(RadixNode cur, String word){
+        String nextWord = word + cur.label; // Grab current word built out
+        if(cur.isEnd){ // End of word so print
+            System.out.println(nextWord);
+        }
+        if(cur.childrenSize == 0){ // No children so no reason to check here
+            return;
+        }
+        int childrenAmount = cur.childrenSize; // Keep going until we run out of children, makes loop not always O(26)
+        for(int i = 0; childrenAmount != 0; i ++){
+            if(cur.children[i] != null) { // We have a child to visit
+                childrenAmount--;
+                printWordsHelper(cur.children[i], nextWord);
+            }
+        }
     }
 
     @Override
-    public void printWordsPrefix(String prefix)
-    {
+    public void printWordsPrefix(String prefix) {
+        printWordsPrefixHelper(root, prefix, 0);
+    }
+    private void printWordsPrefixHelper(RadixNode cur, String prefix, int pointer){
+        // First we see if we can use up all that we currently have
+        // 3 cases, I can think of
+        // 1: The prefix equals current label -> pass all cur children to printWordsHelper
+        // 2: The prefix is smaller than rest of label -> pass cur children with prefix + label to printWordsHelper
+        // 3: The prefix is larger than rest of label -> find appropriate child and recurse
+        // First two cases can be merged into one op
+        int curPointer = 0;
+        while(curPointer < cur.label.length() && pointer < prefix.length()){
+            if(Character.toLowerCase(prefix.charAt(pointer)) != cur.label.charAt(curPointer)){
+                return; // Does not match up hence no words for this prefix
+            }
+            curPointer ++;
+            pointer ++;
+        }
+        if(pointer == prefix.length()){ // First two cases where prefix has been used up
+            String nextWord = prefix + cur.label.substring(curPointer);
+            int childrenAmount = cur.childrenSize; // Keep going until we run out of children, makes loop not always O(26)
+            for(int i = 0; childrenAmount != 0; i ++){
+                if(cur.children[i] != null) { // We have a child to visit
+                    childrenAmount--;
+                    printWordsHelper(cur.children[i], nextWord);
+                }
+            }
+        }
+        else{ // Last case where we need to keep using prefix up
+            int code = Character.toLowerCase(prefix.charAt(pointer)) - 97;
+            if(cur.children[code] == null){ // Nothing to go to!
+                return;
+            }
+            printWordsPrefixHelper(cur.children[code], prefix, pointer);
+        }
 
     }
 }
