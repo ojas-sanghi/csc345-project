@@ -93,6 +93,7 @@ public class StandardTrie implements Trie {
             if(current.children[i] != null)
                 this.printWords(current.children[i], s + (char)(97 + i));
     }
+    
     @Override
     public void printWordsPrefix(String prefix){
         StandardNode current = root;

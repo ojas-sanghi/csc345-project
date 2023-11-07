@@ -1,5 +1,3 @@
-import java.util.HashMap;
-
 public class RadixTree implements Trie {
 
     private class RadixNode {
