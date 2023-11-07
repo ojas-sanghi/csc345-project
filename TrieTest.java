@@ -72,8 +72,23 @@ public class TrieTest {
     @Test
     void insertRadix() {
         Trie trie = new RadixTree();
-        trie.insert("test");
-        assertTrue(trie.search("test"));
+        trie.insert("romanae");
+        trie.insert("romanus");
+        trie.insert("romulus");
+        trie.insert("rubens");
+        trie.insert("ruber");
+        trie.insert("rubicon");
+        trie.insert("rubicundus");
+        assertFalse(trie.search("test"));
+        assertTrue(trie.search("romanae"));
+        assertTrue(trie.search("romulus"));
+        assertFalse(trie.search("r"));
+        assertTrue(trie.search("rubens"));
+        assertFalse(trie.search("romana"));
+        assertTrue(trie.search("rubicundus"));
+        assertTrue(trie.search("rubicon"));
+        assertTrue(trie.search("ruber"));
+        assertFalse(trie.search("xor"));
     }
 
     @Test

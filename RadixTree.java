@@ -25,9 +25,6 @@ public class RadixTree implements Trie {
         root = new RadixNode();
     }
 
-    //  public void preOrder() {
-    //  preOrder(root);
-   // }
 
 //    private void preOrder(RadixNode node) { Will have to redo this to work with the structure of radix tree,
 //        System.out.println(node.value);
@@ -46,7 +43,7 @@ public class RadixTree implements Trie {
             char c = Character.toLowerCase(word.charAt(index));
             String curString = word.substring(index);
             int childIndex = c-97;
-            
+
             //string not in tree, adds the rest as a new node
             if(curr.children[childIndex] == null)
             {
@@ -77,6 +74,7 @@ public class RadixTree implements Trie {
                 if(curString.length() ==curr.children[childIndex].label.length())
                 {
                     curr.children[childIndex].isEnd = true;
+                    break;
                 }
                 //if smaller than node's lable
                 else if(curString.length() < curr.children[childIndex].label.length())
@@ -87,47 +85,46 @@ public class RadixTree implements Trie {
                     int subindex = s -97;
                     curr.children[subindex] = new RadixNode();
                     curr.children[subindex].label = subString;
-                    curr.children[subindex].isEnd = true; 
+                    curr.children[subindex].isEnd = true;
                     curr.childrenSize++;
+                    break;
                 }
                 //if greater than child node, repeat loop with rest of current string
                 else
                 {
-                    split = curr.label.length();
-                }  
-                    
+                    split = curr.children[childIndex].label.length();
+                }
+
             }
             else
             {
                 // if child and string differ, split and create two new branches
-                String subString = curr.label.substring(split); //different part of prev lable
-                curr.label = curr.label.substring(0,split);    //similar part is new label
+                String subString = curr.children[childIndex].label.substring(split); //different part of prev lable
+                curr.children[childIndex].label = curr.children[childIndex].label.substring(0,split);    //similar part is new label
                 char sub1 = Character.toLowerCase(subString.charAt(0));   //gets index for children array
                 int subindex = sub1 -97;
-                
+
                 RadixNode restlabel = new RadixNode();    //creates a new node
                 restlabel.label = subString;            //different part of string is label
-                restlabel.children = curr.children;    //copies children from current
-                restlabel.isEnd = curr.isEnd;          //is curr was a word, child is
+                restlabel.children = curr.children[childIndex].children;    //copies children from current
+                restlabel.isEnd = curr.children[childIndex].isEnd;          //is curr was a word, child is
                 curr.isEnd = false;                    //currno longer a word since split
-                curr.children = new RadixNode[26];    //resets chilren of curr
+                curr.children[childIndex].children = new RadixNode[26];    //resets chilren of curr
                 curr.children[subindex] = restlabel;  //new node as a child of curr
-                
+
                 char rest1 = Character.toLowerCase(curString.charAt(split));//adds rest of string
                 int wordindex = rest1 - 97;                              //get child index
                 curr.children[wordindex] = new RadixNode();
                 curr.children[wordindex].label = curString.substring(split); //adds rest of string a new childnode
                 curr.children[wordindex].isEnd = true;
                 curr.childrenSize = 2;              //curr has 2 children, two different parts of curr and string;
-                break;
             }
             //increments index and traveres tree before repeating
             curr = curr.children[childIndex];
             index += split;
-            
+
         }
     }
-
     @Override
     public void delete(String word)
     {
