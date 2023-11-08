@@ -82,19 +82,18 @@ public class TrieTest {
         assertFalse(trie.search("test"));
         assertTrue(trie.search("romanae"));
         assertTrue(trie.search("romulus"));
-        assertFalse(trie.search("r"));
+        assertFalse(trie.search("rom"));
         assertTrue(trie.search("rubens"));
         assertFalse(trie.search("romana"));
         assertTrue(trie.search("rubicundus"));
         assertTrue(trie.search("rubicon"));
         assertTrue(trie.search("ruber"));
-        assertFalse(trie.search("xor"));
+       assertFalse(trie.search("xor"));
     }
 
     @Test
     void searchRadix() {
         Trie trie = new RadixTree();
-        trie.insert("test");
         assertTrue(trie.search("test"));
         assertFalse(trie.search("testing"));
     }
@@ -102,9 +101,40 @@ public class TrieTest {
     @Test
     void deleteRadix() {
         Trie trie = new RadixTree();
+        trie.insert("romanae");
+        trie.insert("romanus");
+        trie.insert("romulus");
+        trie.insert("rubens");
+        trie.insert("ruber");
+        trie.insert("rubicon"); // ADDING THIS SEEMS TO ADD AN EXTRA N NODE FOR SOME REASON?????
         trie.insert("test");
         trie.delete("test");
         assertFalse(trie.search("test"));
+        trie.delete("romanae");
+        assertFalse(trie.search("romanae"));
+        assertTrue(trie.search("romanus"));
+        trie.delete("rubicon");
+        assertFalse(trie.search("rubicon"));
+        assertTrue(trie.search("ruber"));
+        trie.delete("ruber");
+        assertFalse(trie.search("ruber"));
+        assertTrue(trie.search("romulus"));
+        trie.delete("romulus");
+        assertFalse(trie.search("romulus"));
+        trie.delete("rubens");
+        trie.delete("romanus");
+        assertFalse(trie.search("rubens"));
+        assertFalse(trie.search("romanus"));
+        assertFalse(trie.search("r"));
+        assertFalse(trie.search("rubn"));
+    }
+    @Test
+    void extraDelete(){
+        Trie trie = new RadixTree();
+        trie.insert("rubens");
+        trie.insert("ruber");
+        trie.delete("rubens");
+        trie.delete("ruber");
     }
 
     @Test

@@ -71,7 +71,7 @@ public class RadixTree implements Trie {
             {
                 //if remainder of string matched nodes's label
                 //if equal in length, sets child node as an end
-                if(curString.length() ==curr.children[childIndex].label.length())
+                if(curString.length() == curr.children[childIndex].label.length())
                 {
                     curr.children[childIndex].isEnd = true;
                     break;
@@ -99,25 +99,43 @@ public class RadixTree implements Trie {
             else
             {
                 // if child and string differ, split and create two new branches
-                String subString = curr.children[childIndex].label.substring(split); //different part of prev lable
-                curr.children[childIndex].label = curr.children[childIndex].label.substring(0,split);    //similar part is new label
-                char sub1 = Character.toLowerCase(subString.charAt(0));   //gets index for children array
-                int subindex = sub1 -97;
+                // if child and string differ, split and create two new branches
+                String suffix = curr.children[childIndex].label.substring(split); // different part of the previous label
+                curr.children[childIndex].label = curr.children[childIndex].label.substring(0, split); // the similar part is the new label
 
-                RadixNode restlabel = new RadixNode();    //creates a new node
-                restlabel.label = subString;            //different part of string is label
-                restlabel.children = curr.children[childIndex].children;    //copies children from current
-                restlabel.isEnd = curr.children[childIndex].isEnd;          //is curr was a word, child is
-                curr.isEnd = false;                    //currno longer a word since split
-                curr.children[childIndex].children = new RadixNode[26];    //resets chilren of curr
-                curr.children[subindex] = restlabel;  //new node as a child of curr
+                // Create a new node for the remaining part of the existing label
+                RadixNode newChild1 = new RadixNode();
+                newChild1.label = suffix;
+                newChild1.children = curr.children[childIndex].children; // Copy children from the existing node
+                newChild1.childrenSize = curr.children[childIndex].childrenSize;
+                newChild1.isEnd = curr.children[childIndex].isEnd; // Preserve the 'isEnd' flag
 
-                char rest1 = Character.toLowerCase(curString.charAt(split));//adds rest of string
-                int wordindex = rest1 - 97;                              //get child index
-                curr.children[wordindex] = new RadixNode();
-                curr.children[wordindex].label = curString.substring(split); //adds rest of string a new childnode
-                curr.children[wordindex].isEnd = true;
-                curr.childrenSize = 2;              //curr has 2 children, two different parts of curr and string;
+                // Clear the children of the existing node
+                curr.children[childIndex].children = new RadixNode[26]; // Assuming 26 letters in the alphabet
+                curr.children[childIndex].childrenSize = 0;
+
+                // Update the existing node as a non-leaf node
+                curr.children[childIndex].isEnd = false;
+
+                // Determine the index for the new child node based on the first character of the suffix
+                char firstChar = Character.toLowerCase(suffix.charAt(0));
+                index = firstChar - 'a'; // Assuming lowercase letters
+
+                // Add the new child node to the existing node
+                curr.children[childIndex].children[index] = newChild1;
+                curr.children[childIndex].childrenSize ++; // MAYBE ADD NULL CHECK HERE!
+
+                // Create a new node for the rest of the string
+                RadixNode newChild2 = new RadixNode();
+                newChild2.label = curString.substring(split); // The rest of the string becomes the label of the new node
+                newChild2.isEnd = true; // Mark it as the end of a word
+                // Determine the index for the new child node based on the first character of the new label
+                char firstChar2 = Character.toLowerCase(curString.charAt(split));
+                int index2 = firstChar2 - 'a'; // Assuming lowercase letters
+                // Add the new child node to the existing node
+                curr.children[childIndex].children[index2] = newChild2;
+                curr.children[childIndex].childrenSize ++; // MAYBE ADD NULL CHECK HERE
+                // Update the childrenSize of the current node
             }
             //increments index and traveres tree before repeating
             curr = curr.children[childIndex];
@@ -145,7 +163,7 @@ public class RadixTree implements Trie {
         }
         // Verification that it actually exists
         char c = Character.toLowerCase(word.charAt(0));
-        int index = Character.charCount(c) - 97;
+        int index = c - 97;
         RadixNode child = curr.children[index];
         if(child == null || ! word.startsWith(child.label)){ // We can do this since we know that there will be at most one substring with that char
             return curr; // Does not exist so don't modify
@@ -182,7 +200,7 @@ public class RadixTree implements Trie {
     private boolean search(String search, RadixNode current)
     {
         //If input string is empty, then it's been found
-        if(search.isEmpty()) return true;
+        if(search.isEmpty() && current.isEnd) return true;
         //If current node is the end of a word (and input string isn't empty), then not found
         else if(current.childrenSize == 0) return false;
         //Recursive case
