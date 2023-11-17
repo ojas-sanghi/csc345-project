@@ -136,6 +136,7 @@ public class RadixTree implements Trie {
                 curr.children[childIndex].children[index2] = newChild2;
                 curr.children[childIndex].childrenSize ++; // MAYBE ADD NULL CHECK HERE
                 // Update the childrenSize of the current node
+                break; // We are done if this case occurs
             }
             //increments index and traveres tree before repeating
             curr = curr.children[childIndex];
