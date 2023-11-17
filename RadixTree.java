@@ -80,13 +80,14 @@ public class RadixTree implements Trie {
                 else if(curString.length() < curr.children[childIndex].label.length())
                 {
                     String subString = curr.children[childIndex].label.substring(curString.length());
-                    curr.label = curString;
+                    curr.children[childIndex].label = curString;
                     char s = Character.toLowerCase(subString.charAt(0));
                     int subindex = s -97;
-                    curr.children[subindex] = new RadixNode();
-                    curr.children[subindex].label = subString;
-                    curr.children[subindex].isEnd = true;
-                    curr.childrenSize++;
+                    RadixNode child = curr.children[childIndex];
+                    child.children[subindex] = new RadixNode();
+                    child.children[subindex].label = subString;
+                    child.children[subindex].isEnd = true;
+                    child.childrenSize ++;
                     break;
                 }
                 //if greater than child node, repeat loop with rest of current string
