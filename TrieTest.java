@@ -1,3 +1,8 @@
+/**
+ * This is a Junit test file used to test both our Trie and RadixTree structures.
+ * This includes test cases we used to debug our structures along with extensive tests that utilize a file with thousands of words.
+ */
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -7,8 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -31,6 +34,9 @@ public class TrieTest {
 
     @Test
     void insert() {
+        /**
+        Very basic trie insert test
+         */
         Trie trie = new StandardTrie();
         trie.insert("test");
         assertTrue(trie.search("test"));
@@ -38,6 +44,9 @@ public class TrieTest {
 
     @Test
     void search() {
+        /**
+         * Very basic trie search test
+         */
         Trie trie = new StandardTrie();
         trie.insert("test");
         assertTrue(trie.search("test"));
@@ -46,6 +55,9 @@ public class TrieTest {
 
     @Test
     void delete() {
+        /**
+         * Very basic trie delete test
+         */
         Trie trie = new StandardTrie();
         trie.insert("test");
         trie.delete("test");
@@ -54,6 +66,9 @@ public class TrieTest {
 
     @Test
     void printWordsPrefix() {
+        /**
+         * Very basic printwords from prefix trie test
+         */
         Trie trie = new StandardTrie();
         trie.insert("test");
         trie.insert("testing");
@@ -67,6 +82,9 @@ public class TrieTest {
 
     @Test
     void printWords() {
+        /**
+         * Very basic print all words test
+         */
         Trie trie = new StandardTrie();
         trie.insert("test");
         trie.insert("testing");
@@ -81,6 +99,9 @@ public class TrieTest {
 
     @Test
     void insertRadix() {
+        /**
+         * Insert radix stress test utilized to debug extra word bug we were encountering
+         */
         Trie trie = new RadixTree();
         trie.insert("romanae");
         trie.insert("romanus");
@@ -102,6 +123,9 @@ public class TrieTest {
     }
     @Test
     void insertRadix2(){
+        /**
+         * Another stress test for insert but this time with basic words
+         */
         Trie trie = new RadixTree();
         trie.insert("the");
         trie.insert("and");
@@ -116,9 +140,58 @@ public class TrieTest {
         assertTrue(trie.search("a"));
         assertTrue(trie.search("in"));
     }
+    @Test
+    void insertRadix3(){
+        /**
+         * An expanded version of the previous test
+         */
+        Trie trie = new RadixTree();
+        trie.insert("of");
+        trie.insert("on");
+        trie.insert("one");
+        trie.insert("or");
+        trie.insert("out");
+        trie.insert("only");
+        trie.insert("over");
+        trie.insert("other");
+        trie.insert("old");
+        trie.insert("our");
+        trie.insert("own");
+        trie.insert("off");
+        trie.insert("once");
+        trie.insert("open");
+        trie.insert("others");
+        trie.insert("often");
+        assertTrue(trie.search("often"));
+    }
+
+    @Test
+    void insertRadix4(){
+        /**
+         * Used to find last bug that was causing the extensive insert test to fail
+         */
+        Trie trie = new RadixTree();
+        //trie.insert("do");
+        //trie.insert("did");
+        //trie.insert("down");
+        //trie.insert("day");
+        //trie.insert("door");
+        //trie.insert("done");
+        //trie.insert("days");
+        trie.insert("dear");
+        //trie.insert("dark");
+        trie.insert("dead");
+        trie.insert("death");
+        //trie.insert("does");
+        trie.insert("de");
+        assertTrue(trie.search("de"));
+    }
 
     @Test
     void searchRadix() {
+        /**
+         * Very basic radix tree search test
+         */
         Trie trie = new RadixTree();
         assertFalse(trie.search("test"));
         assertFalse(trie.search("testing"));
@@ -126,6 +199,9 @@ public class TrieTest {
 
     @Test
     void deleteRadix() {
+        /**
+         * Extensive stress delete test, found bug in insert using this test
+         */
         Trie trie = new RadixTree();
         trie.insert("romanae");
         trie.insert("romanus");
@@ -156,6 +232,9 @@ public class TrieTest {
     }
     @Test
     void extraDelete(){
+        /**
+         * A more basic delete test
+         */
         Trie trie = new RadixTree();
         trie.insert("rubens");
         trie.insert("ruber");
@@ -165,6 +244,9 @@ public class TrieTest {
 
     @Test
     void printWordsPrefixRadix() {
+        /**
+         * A simple prefix print for Radix Tree
+         */
         Trie trie = new RadixTree();
         trie.insert("test");
         trie.insert("testing");
@@ -178,6 +260,9 @@ public class TrieTest {
 
     @Test
     void printWordsRadix() {
+        /**
+         * A simple print words for radix tree
+         */
         Trie trie = new RadixTree();
         trie.insert("test");
         trie.insert("testing");
@@ -197,6 +282,9 @@ public class TrieTest {
 
 
     private List<String> readWordsFromFile(String filename) throws IOException {
+        /**
+         * This reads the words from a test file and puts them in an arraylist
+         */
         List<String> words = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
@@ -208,56 +296,76 @@ public class TrieTest {
     }
     @Test
     void insertWordsFromFile(){
-        //Trie trie = new RadixTree();
-        Trie trie = new StandardTrie();
+        /**
+         * This test case takes in words from a file, randomizes them,
+         * and then makes sure each word was inserted and can be found both during and after the insertions.
+         * Most insert test cases above are derived from this test case.
+         */
+        Trie radix = new RadixTree();
+        Trie standard = new StandardTrie();
         List<String> words;
+
         try {
-            words = readWordsFromFile("words.txt");
-            Collections.shuffle(words);
+            words = readWordsFromFile("words.txt"); // Grab words
+            Collections.shuffle(words); // Randomize
         }
         catch (IOException ex){
-            assertTrue(false);
+            assertTrue(false); // Fail test case if file didn't load in
             return;
         }
-        for(int i = 0; i < words.size(); i ++){
-            trie.insert(words.get(i));
-            assertTrue(trie.search(words.get(i)));
+
+        for (String word : words) { // Insert words and check for them
+            standard.insert(word);
+            radix.insert(word);
+            assertTrue(standard.search(word));
+            assertTrue(radix.search(word));
         }
-        // It adds words but others are getting broken afterwards
 
-
-       for(int i = 0; i < words.size(); i ++){
-           assertTrue(trie.search(words.get(i)));
-       }
+        for (String word : words) { // Make sure they can still be located
+            assertTrue(standard.search(word));
+            assertTrue(radix.search(word));
+        }
     }
     @Test
     void deleteWordsFromFile() throws IOException {
-        Trie trie = new StandardTrie();
+        /**
+         * This test case takes in words from a file, randomizes them,
+         * and then deletes a random amount of them.
+         * It then makes sure deleted words are no longer in the structure
+         * while other words still are in the structure.
+         * Most insert test cases above are derived from this test case.
+         */
+        Trie standard = new StandardTrie();
+        Trie radix = new RadixTree();
         List<String> words = readWordsFromFile("words.txt");
+        Collections.shuffle(words); // Randomize words
 
-        // Shuffle the words to insert them in random order
-        Collections.shuffle(words);
-
-        // Insert a random subset of words into the trie
-        int numWordsToInsert = new Random().nextInt(words.size()) + 1;
-        for (int i = 0; i < numWordsToInsert; i++) {
-            trie.insert(words.get(i));
+        for (String word : words) { // Place into structures
+            standard.insert(word);
+            radix.insert(word);
         }
 
-        // Shuffle the words again for deletion
-        Collections.shuffle(words);
+        Collections.shuffle(words); // Shuffle again for deletion
 
-        // Delete a random subset of inserted words
-        int numWordsToDelete = new Random().nextInt(numWordsToInsert + 1);
+        int numWordsToDelete = new Random().nextInt(words.size()); // Delete a random subset of inserted words
         for (int i = 0; i < numWordsToDelete; i++) {
-            String wordToDelete = words.get(i);
-            trie.delete(wordToDelete);
-            assertFalse(trie.search(wordToDelete));
+            standard.delete(words.get(i));
+            radix.delete(words.get(i));
+            assertFalse(standard.search(words.get(i)));
+            assertFalse(radix.search(words.get(i)));
+        }
+        for(int i = numWordsToDelete; i < words.size(); i ++){ // Make sure no other words got deleted
+            assertTrue(standard.search(words.get(i)));
+            assertTrue(radix.search(words.get(i)));
         }
     }
     @Test
     void printAllWords() {
-        Trie trie = new StandardTrie(); // Change to StandardTrie if needed
+        /**
+         * This prints all words found in the structures and makes sure it got the right words
+         */
+        Trie standard = new StandardTrie();
+        Trie radix = new RadixTree();
         List<String> words;
         try {
             words = readWordsFromFile("words.txt");
@@ -267,61 +375,80 @@ public class TrieTest {
             return;
         }
 
-        for (String word : words) {
-            trie.insert(word);
+        for (String word : words) { // Insert words into the structures
+            standard.insert(word);
+            radix.insert(word);
         }
 
         ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStreamCaptor));
 
-        trie.printWords();
-
-        System.setOut(System.out); // Reset System.out to the standard output stream
+        standard.printWords();
 
         String printedOutput = outputStreamCaptor.toString().trim().replaceAll("\\r?\\n", ""); // Gets rid of new line for easy comparison
 
         // Check that printed output is exactly the same as the expected words
         Collections.sort(words); // Output will be sorted
         assertEquals(String.join("", words), printedOutput);
+
+        outputStreamCaptor = new ByteArrayOutputStream(); // Repeat but for radix
+        System.setOut(new PrintStream(outputStreamCaptor));
+
+        radix.printWords();
+
+        printedOutput = outputStreamCaptor.toString().trim().replaceAll("\\r?\\n", "");
+        assertEquals(String.join("", words), printedOutput);
+
     }
     @Test
     void printAllWordsWithRandomPrefix() {
-        Trie trie = new StandardTrie(); // Change to StandardTrie if needed
+        /**
+         * This is similar to the above test case but for prefixes instead
+         */
+        Trie standard = new StandardTrie();
+        Trie radix = new RadixTree();
         List<String> words;
         try {
             words = readWordsFromFile("words.txt");
-            Collections.shuffle(words);
+            Collections.shuffle(words); // Randomize words
         } catch (IOException ex) {
             assertTrue(false);
             return;
         }
 
         for (String word : words) {
-            trie.insert(word);
+            standard.insert(word);
+            radix.insert(word);
         }
 
-        // Randomly select a prefix from one of the words
-        String randomPrefix = getRandomPrefix(words);
+        String randomPrefix = getRandomPrefix(words); // Randomly select a prefix from one of the words
+
+        List<String> prefixedWords = words.stream() // This gets words that only start with the prefix and puts them into a list
+                .filter(word -> word.startsWith(randomPrefix))
+                .sorted()
+                .collect(Collectors.toList());
 
         ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStreamCaptor));
 
-        trie.printWordsPrefix(randomPrefix);
-
-        System.setOut(System.out); // Reset System.out to the standard output stream
-
+        standard.printWordsPrefix(randomPrefix);
         String printedOutput = outputStreamCaptor.toString().trim().replaceAll("\\r?\\n", ""); // Gets rid of new line for easy comparison
 
-        // Check that printed output is exactly the same as the expected words with the randomly selected prefix
-        List<String> prefixedWords = words.stream()
-                .filter(word -> word.startsWith(randomPrefix))
-                .sorted()
-                .collect(Collectors.toList());
+        assertEquals(String.join("", prefixedWords), printedOutput);
+
+        outputStreamCaptor = new ByteArrayOutputStream(); // Repeat but for radix
+        System.setOut(new PrintStream(outputStreamCaptor));
+
+        radix.printWordsPrefix(randomPrefix);
+        printedOutput = outputStreamCaptor.toString().trim().replaceAll("\\r?\\n", "");
 
         assertEquals(String.join("", prefixedWords), printedOutput);
     }
 
     private String getRandomPrefix(List<String> words) {
+        /**
+         * This gets a random word and then extracts a random prefix from it
+         */
         if (words.isEmpty()) {
             return ""; // Return an empty string if the list is empty
         }

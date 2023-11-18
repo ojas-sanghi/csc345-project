@@ -79,15 +79,20 @@ public class RadixTree implements Trie {
                 //if smaller than node's lable
                 else if(curString.length() < curr.children[childIndex].label.length())
                 {
-                    String subString = curr.children[childIndex].label.substring(curString.length());
-                    curr.children[childIndex].label = curString;
-                    char s = Character.toLowerCase(subString.charAt(0));
-                    int subindex = s -97;
                     RadixNode child = curr.children[childIndex];
-                    child.children[subindex] = new RadixNode();
-                    child.children[subindex].label = subString;
-                    child.children[subindex].isEnd = true;
-                    child.childrenSize ++;
+                    String subString = child.label.substring(curString.length());
+                    child.label = curString;
+                    char s = Character.toLowerCase(subString.charAt(0));
+                    int subindex = s - 97;
+                    RadixNode next =  new RadixNode();
+                    next.children = child.children;
+                    next.childrenSize = child.childrenSize;
+                    next.label = subString;
+                    next.isEnd = child.isEnd;
+                    child.children = new RadixNode[26];
+                    child.childrenSize = 1;
+                    child.children[subindex] = next;
+                    child.isEnd = true;
                     break;
                 }
                 //if greater than child node, repeat loop with rest of current string
@@ -255,6 +260,7 @@ public class RadixTree implements Trie {
         // 2: The prefix is smaller than rest of label -> pass cur children with prefix + label to printWordsHelper
         // 3: The prefix is larger than rest of label -> find appropriate child and recurse
         // First two cases can be merged into one op
+        String prev = prefix.substring(0, pointer);
         int curPointer = 0;
         while(curPointer < cur.label.length() && pointer < prefix.length()){
             if(Character.toLowerCase(prefix.charAt(pointer)) != cur.label.charAt(curPointer)){
@@ -264,22 +270,16 @@ public class RadixTree implements Trie {
             pointer ++;
         }
         if(pointer == prefix.length()){ // First two cases where prefix has been used up
-            String nextWord = prefix + cur.label.substring(curPointer);
-            int childrenAmount = cur.childrenSize; // Keep going until we run out of children, makes loop not always O(26)
-            for(int i = 0; childrenAmount != 0; i ++){
-                if(cur.children[i] != null) { // We have a child to visit
-                    childrenAmount--;
-                    printWordsHelper(cur.children[i], nextWord);
-                }
-            }
+            // Need to check if part of prefix not in label and add to string
+            printWordsHelper(cur, prev);
         }
         else{ // Last case where we need to keep using prefix up
             int code = Character.toLowerCase(prefix.charAt(pointer)) - 97;
-            if(cur.children[code] == null){ // Nothing to go to!
-                return;
+            if(cur.children[code] != null){ // Nothing to go to!
+                printWordsPrefixHelper(cur.children[code], prefix, pointer);
             }
-            printWordsPrefixHelper(cur.children[code], prefix, pointer);
         }
-
     }
+
+
 }
