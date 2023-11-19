@@ -529,7 +529,44 @@ public class TrieTest {
         return randomWord.substring(0, prefixLength);
     }
 
+    @Test
+    void testProfiler()
+    {
+        Trie standard = new StandardTrie();
+        Trie radix = new RadixTree();
 
+        List<String> words;
+        try {
+            words = readWordsFromFile("words.txt");
+            Collections.shuffle(words); // Randomize words
+        } catch (IOException ex) {
+            fail();
+            return;
+        }
+
+        //Inserts
+        words.forEach(s ->
+        {
+            standard.insert(s);
+            radix.insert(s);
+        });
+
+        //Searches
+        words.forEach(s ->
+        {
+            standard.search(s);
+            radix.search(s);
+        });
+
+        //Deletes
+        words.forEach(s ->
+        {
+            standard.delete(s);
+            radix.delete(s);
+        });
+
+        assertTrue(true);
+    }
 
 
 }
