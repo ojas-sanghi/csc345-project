@@ -151,9 +151,9 @@ public class RadixTree implements Trie {
         }
     }
     @Override
-    public void delete(String word)
+    public boolean delete(String word)
     {
-        this.delete(this.root, word);
+        return this.delete(this.root, word) != null;
     }
 
     private RadixNode delete(RadixNode curr, String word){

@@ -53,15 +53,16 @@ public class StandardTrie implements Trie {
         }
         current.isEnd = true;
     }
-    public void delete(String key)
+
+    public boolean delete(String key)
     {
         StandardNode curNode = root;
         //if empty string is given
         for(int i = 0;i<key.length();i++)
         {
-            if(curNode== null)
+            if(curNode == null)
             {
-                return;
+                return false;
             }
             char c = Character.toLowerCase(key.charAt(i));
             if(Character.isLetter(c))
@@ -69,12 +70,14 @@ public class StandardTrie implements Trie {
                 int code = c-97;
                 if(curNode.children[code] == null)
                 {
-                    return;
+                    return false;
                 }
                 curNode = curNode.children[code];
             }
         }
         curNode.isEnd = false;
+
+        return true;
     }
 
     
