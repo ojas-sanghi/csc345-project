@@ -8,9 +8,6 @@ public class RadixTree implements Trie {
         String label;
 
         RadixNode() {
-            // TODO: change this, don't need 26
-            // maybe also change in standard trie? make it a dynamic list?
-            // can change to more memory efficient one once we have tests at a later point
             label = "";
             children = new RadixNode[26];
             childrenSize = 0;

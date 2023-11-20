@@ -29,9 +29,7 @@ public class StandardTrie implements Trie {
         if (newStandardNode == null)
             return false;
 
-        // do we want to return value of StandardNode, or boolean as to whether or not
-        // it exists?
-        // change this return value, the others, and the two signatures accordingly
+        // return if we found the word
         if (idx == word.length() - 1 && newStandardNode.isEnd)
             return true;
 
