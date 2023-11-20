@@ -49,8 +49,8 @@ public class UserInput
                     System.out.println("Type a word to delete: ");
                     String word = scanner.next();
 
-                    trie.delete(word);
-                    System.out.println("\"" + word + "\" has been deleted.");
+                    boolean delete = trie.delete(word);
+                    System.out.println("\"" + word + "\"" + (delete ? " has been deleted." : " was not found in the trie, nothing was deleted."));
                 }
                 case 4 ->
                 {
