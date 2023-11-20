@@ -1,3 +1,4 @@
+
 /**
  * This is a Junit test file used to test both our Trie and RadixTree structures.
  * This includes test cases we used to debug our structures along with extensive tests that utilize a file with thousands of words.
@@ -12,13 +13,11 @@ import org.junit.jupiter.api.BeforeEach;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
-
 
 public class TrieTest {
 
@@ -35,7 +34,7 @@ public class TrieTest {
     @Test
     void insert() {
         /**
-        Very basic trie insert test
+         * Very basic trie insert test
          */
         Trie trie = new StandardTrie();
         trie.insert("test");
@@ -83,10 +82,10 @@ public class TrieTest {
         int start = 'a', end = 'z';
 
         StandardTrie trie = new StandardTrie();
-        for(int i = start; i <= end; i++)
-            trie.insert(String.valueOf((char)(i)));
+        for (int i = start; i <= end; i++)
+            trie.insert(String.valueOf((char) (i)));
 
-        String selected = String.valueOf((char)(int)(Math.random() * (end - start) + start));
+        String selected = String.valueOf((char) (int) (Math.random() * (end - start) + start));
         trie.delete(selected);
 
         assertFalse(trie.search(selected));
@@ -150,7 +149,8 @@ public class TrieTest {
     @Test
     void insertRadix() {
         /**
-         * Insert radix stress test utilized to debug extra word bug we were encountering
+         * Insert radix stress test utilized to debug extra word bug we were
+         * encountering
          */
         Trie trie = new RadixTree();
         trie.insert("romanae");
@@ -171,8 +171,9 @@ public class TrieTest {
         assertTrue(trie.search("ruber"));
         assertFalse(trie.search("xor"));
     }
+
     @Test
-    void insertRadix2(){
+    void insertRadix2() {
         /**
          * Another stress test for insert but this time with basic words
          */
@@ -190,8 +191,9 @@ public class TrieTest {
         assertTrue(trie.search("a"));
         assertTrue(trie.search("in"));
     }
+
     @Test
-    void insertRadix3(){
+    void insertRadix3() {
         /**
          * An expanded version of the previous test
          */
@@ -216,23 +218,23 @@ public class TrieTest {
     }
 
     @Test
-    void insertRadix4(){
+    void insertRadix4() {
         /**
          * Used to find last bug that was causing the extensive insert test to fail
          */
         Trie trie = new RadixTree();
-        //trie.insert("do");
-        //trie.insert("did");
-        //trie.insert("down");
-        //trie.insert("day");
-        //trie.insert("door");
-        //trie.insert("done");
-        //trie.insert("days");
+        // trie.insert("do");
+        // trie.insert("did");
+        // trie.insert("down");
+        // trie.insert("day");
+        // trie.insert("door");
+        // trie.insert("done");
+        // trie.insert("days");
         trie.insert("dear");
-        //trie.insert("dark");
+        // trie.insert("dark");
         trie.insert("dead");
         trie.insert("death");
-        //trie.insert("does");
+        // trie.insert("does");
         trie.insert("de");
         assertTrue(trie.search("de"));
     }
@@ -298,8 +300,9 @@ public class TrieTest {
         assertFalse(trie.search("r"));
         assertFalse(trie.search("rubn"));
     }
+
     @Test
-    void extraDelete(){
+    void extraDelete() {
         /**
          * A more basic delete test
          */
@@ -348,7 +351,6 @@ public class TrieTest {
         System.setOut(standardOut);
     }
 
-
     private List<String> readWordsFromFile(String filename) throws IOException {
         /**
          * This reads the words from a test file and puts them in an arraylist
@@ -362,11 +364,13 @@ public class TrieTest {
         }
         return words;
     }
+
     @Test
-    void insertWordsFromFile(){
+    void insertWordsFromFile() {
         /**
          * This test case takes in words from a file, randomizes them,
-         * and then makes sure each word was inserted and can be found both during and after the insertions.
+         * and then makes sure each word was inserted and can be found both during and
+         * after the insertions.
          * Most insert test cases above are derived from this test case.
          */
         Trie radix = new RadixTree();
@@ -376,8 +380,7 @@ public class TrieTest {
         try {
             words = readWordsFromFile("words.txt"); // Grab words
             Collections.shuffle(words); // Randomize
-        }
-        catch (IOException ex){
+        } catch (IOException ex) {
             assertTrue(false); // Fail test case if file didn't load in
             return;
         }
@@ -394,6 +397,7 @@ public class TrieTest {
             assertTrue(radix.search(word));
         }
     }
+
     @Test
     void deleteWordsFromFile() throws IOException {
         /**
@@ -422,15 +426,17 @@ public class TrieTest {
             assertFalse(standard.search(words.get(i)));
             assertFalse(radix.search(words.get(i)));
         }
-        for(int i = numWordsToDelete; i < words.size(); i ++){ // Make sure no other words got deleted
+        for (int i = numWordsToDelete; i < words.size(); i++) { // Make sure no other words got deleted
             assertTrue(standard.search(words.get(i)));
             assertTrue(radix.search(words.get(i)));
         }
     }
+
     @Test
     void printAllWords() {
         /**
-         * This prints all words found in the structures and makes sure it got the right words
+         * This prints all words found in the structures and makes sure it got the right
+         * words
          */
         Trie standard = new StandardTrie();
         Trie radix = new RadixTree();
@@ -453,7 +459,8 @@ public class TrieTest {
 
         standard.printWords();
 
-        String printedOutput = outputStreamCaptor.toString().trim().replaceAll("\\r?\\n", ""); // Gets rid of new line for easy comparison
+        String printedOutput = outputStreamCaptor.toString().trim().replaceAll("\\r?\\n", ""); // Gets rid of new line
+                                                                                               // for easy comparison
 
         // Check that printed output is exactly the same as the expected words
         Collections.sort(words); // Output will be sorted
@@ -468,6 +475,7 @@ public class TrieTest {
         assertEquals(String.join("", words), printedOutput);
 
     }
+
     @Test
     void printAllWordsWithRandomPrefix() {
         /**
@@ -491,7 +499,8 @@ public class TrieTest {
 
         String randomPrefix = getRandomPrefix(words); // Randomly select a prefix from one of the words
 
-        List<String> prefixedWords = words.stream() // This gets words that only start with the prefix and puts them into a list
+        List<String> prefixedWords = words.stream() // This gets words that only start with the prefix and puts them
+                                                    // into a list
                 .filter(word -> word.startsWith(randomPrefix))
                 .sorted()
                 .collect(Collectors.toList());
@@ -500,7 +509,8 @@ public class TrieTest {
         System.setOut(new PrintStream(outputStreamCaptor));
 
         standard.printWordsPrefix(randomPrefix);
-        String printedOutput = outputStreamCaptor.toString().trim().replaceAll("\\r?\\n", ""); // Gets rid of new line for easy comparison
+        String printedOutput = outputStreamCaptor.toString().trim().replaceAll("\\r?\\n", ""); // Gets rid of new line
+                                                                                               // for easy comparison
 
         assertEquals(String.join("", prefixedWords), printedOutput);
 
@@ -530,8 +540,7 @@ public class TrieTest {
     }
 
     @Test
-    void testProfiler()
-    {
+    void testProfiler() {
         Trie standard = new StandardTrie();
         Trie radix = new RadixTree();
 
@@ -544,29 +553,25 @@ public class TrieTest {
             return;
         }
 
-        //Inserts
-        words.forEach(s ->
-        {
+        // Inserts
+        words.forEach(s -> {
             standard.insert(s);
             radix.insert(s);
         });
 
-        //Searches
-        words.forEach(s ->
-        {
+        // Searches
+        words.forEach(s -> {
             standard.search(s);
             radix.search(s);
         });
 
-        //Deletes
-        words.forEach(s ->
-        {
+        // Deletes
+        words.forEach(s -> {
             standard.delete(s);
             radix.delete(s);
         });
 
         assertTrue(true);
     }
-
 
 }

@@ -37,6 +37,7 @@ public class StandardTrie implements Trie {
 
         return search(word, newStandardNode, idx + 1);
     }
+
     public void insert(String key) {
         int pointer = 0; // This points to the current char being added
         StandardNode current = root; // This points to the node we are currently exploring
@@ -54,22 +55,17 @@ public class StandardTrie implements Trie {
         current.isEnd = true;
     }
 
-    public boolean delete(String key)
-    {
+    public boolean delete(String key) {
         StandardNode curNode = root;
-        //if empty string is given
-        for(int i = 0;i<key.length();i++)
-        {
-            if(curNode == null)
-            {
+        // if empty string is given
+        for (int i = 0; i < key.length(); i++) {
+            if (curNode == null) {
                 return false;
             }
             char c = Character.toLowerCase(key.charAt(i));
-            if(Character.isLetter(c))
-            {
-                int code = c-97;
-                if(curNode.children[code] == null)
-                {
+            if (Character.isLetter(c)) {
+                int code = c - 97;
+                if (curNode.children[code] == null) {
                     return false;
                 }
                 curNode = curNode.children[code];
@@ -80,36 +76,35 @@ public class StandardTrie implements Trie {
         return true;
     }
 
-    
-    public void printWords()
-    {
+    public void printWords() {
         this.printWords(this.root, "");
     }
 
-    private void printWords(StandardNode current, String s)
-    {
-        //If current node is the end of a word, print out the string
-        if(current.isEnd) System.out.println(s);
+    private void printWords(StandardNode current, String s) {
+        // If current node is the end of a word, print out the string
+        if (current.isEnd)
+            System.out.println(s);
 
-        //Then keep checking children for more potential words
-        for(int i = 0; i < 26; i++)
-            if(current.children[i] != null)
-                this.printWords(current.children[i], s + (char)(97 + i));
+        // Then keep checking children for more potential words
+        for (int i = 0; i < 26; i++)
+            if (current.children[i] != null)
+                this.printWords(current.children[i], s + (char) (97 + i));
     }
-    
+
     @Override
-    public void printWordsPrefix(String prefix){
+    public void printWordsPrefix(String prefix) {
         StandardNode current = root;
-        for(int pointer = 0; pointer < prefix.length(); pointer ++){ // Go through all letters in the prefix
+        for (int pointer = 0; pointer < prefix.length(); pointer++) { // Go through all letters in the prefix
             char c = Character.toLowerCase(prefix.charAt(pointer));
-            if(Character.isLetter(c)){
+            if (Character.isLetter(c)) {
                 int code = c - 97;
-                if(current.children[code] == null){ // If null then we know we have no words there
+                if (current.children[code] == null) { // If null then we know we have no words there
                     return;
                 }
                 current = current.children[code];
             }
         }
-        printWords(current, prefix); // Made it through the prefix, now just call printWords but starting from this node instead of root
+        printWords(current, prefix); // Made it through the prefix, now just call printWords but starting from this
+                                     // node instead of root
     }
 }
